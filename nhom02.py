@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import gzip
+import histogram, vector, downsample
+
 def load_mnist(path, kind='train'):
     labels_path = os.path.join(path, "%s-labels-idx1-ubyte.gz" % kind)
     images_path = os.path.join(path, '%s-images-idx3-ubyte.gz' % kind)
@@ -24,20 +26,37 @@ print('Train labels shape:', y_train.shape)
 X_t10k, y_t10k = load_mnist('Data/', kind='t10k')
 print('Test images shape: ', X_t10k.shape)
 print('Test labels shape: ', y_t10k.shape)
+print()
 
-for i in range(28):
-    for j in range(28):
-        print('{0: <5}'.format(X_train[0][i][j]), end=' ')
-    print()
-    
+print('Extracting vector...')
+train_vector = vector.get_vector(X_train)
+test_vector = vector.get_vector(X_t10k)
+print('Train vector shape:', train_vector.shape)
+print('Test vector shape:', test_vector.shape)
+print()
 
-fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True,)
-ax = ax.flatten()
-for i in range(10):
-    img = X_train[y_train == i][0]
-    ax[i].imshow(img, cmap='Greys', interpolation='nearest')
+print('Extracting downsample...')
+train_downsample = downsample.get_downsample(X_train)
+test_downsample = downsample.get_downsample(X_t10k)
+print('Train downsample shape:', train_downsample.shape)
+print('Test downsample shape:', test_downsample.shape)
+print()
 
-ax[0].set_xticks([])
-ax[0].set_yticks([])
-plt.tight_layout()
-plt.show()
+print('Extracting histogram...')
+train_histogram = histogram.get_histogram(X_train)
+test_histogram = histogram.get_histogram(X_t10k)
+print('Train histogram shape:', train_histogram.shape)
+print('Test histogram shape:', test_histogram.shape)
+print()
+
+
+# fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True,)
+# ax = ax.flatten()
+# for i in range(10):
+#     img = X_train[y_train == i][0]
+#     ax[i].imshow(img, cmap='Greys', interpolation='nearest')
+
+# ax[0].set_xticks([])
+# ax[0].set_yticks([])
+# plt.tight_layout()
+# plt.show()
