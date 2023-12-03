@@ -7,5 +7,6 @@ def get_vector(data):
     for sampleIndex in range(sampleCount):
         for i in range(data_shape[1]):
             for j in range(data_shape[2]):
+                #Chuyen mang 2 chieu thanh mang 1 chieu
                 res[sampleIndex, 28*i + j] = data[sampleIndex, i, j]
     return res
