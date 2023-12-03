@@ -13,4 +13,11 @@ def get_downsample(data):
             for j in range(data_shape[2]):
                 #Tinh trung binh cong 4 o gop thanh 1 o, chuyen ve doan [0,1].
                 res[sampleIndex, i//2, j//2] += (data[sampleIndex, i, j])/4
-    return res
+    #Duoi thang anh
+    arr = np.empty((sampleCount, 196))
+    res_shape = res.shape
+    for sampleIndex in range(sampleCount):
+        for i in range(res_shape[1]):
+            for j in range(res_shape[2]):
+                arr[sampleIndex, 14*i + j] = res[sampleIndex, i, j]
+    return arr
