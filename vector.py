@@ -1,7 +1,7 @@
 import numpy as np
 
-def get_vector(data):
-    data_shape = data.shape
-    sampleCount = data_shape[0]
-    res = np.empty((0, 0))
-    return res
+
+def get_vector(arr_3d):
+    a, b, c = arr_3d.shape
+    arr_2d = arr_3d.reshape(a, -1)
+    return arr_2d
