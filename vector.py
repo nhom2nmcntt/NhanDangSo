@@ -2,6 +2,8 @@ import numpy as np
 
 def get_vector(data):
     data_shape = data.shape
+    #chuan hoa anh
+    data = data * (1/256) 
     sampleCount = data_shape[0]
     res = np.empty((sampleCount, 784))
     for sampleIndex in range(sampleCount):
