@@ -1,8 +1,9 @@
 import numpy as np
-from collections import Counter
+import matplotlib.pyplot as plt
+def get_histogram(arr_3d):
+    a, b, c = arr_3d.shape
+    flattened_arr = arr_3d.reshape((a, -1))
+    hist, edges = np.histogram(flattened_arr, bins=b*c, density=True)
+    arr_2d = np.column_stack((edges[:-1], hist))
 
-def get_histogram(data):
-    data_shape = data.shape
-    sampleCount = data_shape[0]
-    res = np.empty((0, 0))
-    return res
+    return arr_2d
