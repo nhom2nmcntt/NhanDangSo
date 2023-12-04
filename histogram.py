@@ -1,8 +1,11 @@
-import numpy as np
-from collections import Counter
+import numpy as np;
 
 def get_histogram(data):
-    data_shape = data.shape
-    sampleCount = data_shape[0]
-    res = np.empty((0, 0))
-    return res
+    Shape = data.shape;
+    ret = np.zeros((256), dtype = int);
+    for i in range(0, Shape[0]):
+        for j in range(0, 28):
+            for k in range(0, 28):
+                ret[int(data[i][j][k])] += 1;
+    
+    return ret;
