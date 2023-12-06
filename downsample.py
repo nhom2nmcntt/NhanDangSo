@@ -8,6 +8,6 @@ def get_downsample(data):
         for j in range(0, 28, 2):
             for k in range(0, 28, 2):
                 idx += 1;
-                ret[i][idx] = (data[i][j][k] + data[i][j][k + 1] + data[i][j + 1][k] + data[i][j + 1][k + 1]) / 4.0;
+                ret[i][idx] = (data[i][j][k] + data[i][j][k + 1] + data[i][j + 1][k] + data[i][j + 1][k + 1]) / (255*4.0);
 
     return ret;
