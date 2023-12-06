@@ -1,5 +1,6 @@
 import numpy as np
 from collections import Counter
+from tqdm import tqdm
 
 def get_histogram(data):
     data_shape = data.shape
@@ -8,7 +9,7 @@ def get_histogram(data):
     res = np.empty((sampleCount, 256)) 
     # kich thuoc anh
     image_size = data_shape[1] * data_shape[2]
-    for sampleIndex in range(sampleCount):
+    for sampleIndex in tqdm(range(sampleCount)):
         # dung counter de dem
         counter = Counter(data[sampleIndex].reshape(-1))
         for j in range(256):
