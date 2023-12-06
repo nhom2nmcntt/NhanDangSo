@@ -1,7 +1,5 @@
 import numpy as np
 
-def get_vector(data):
-    data_shape = data.shape
-    sampleCount = data_shape[0]
-    res = np.empty((0, 0))
-    return res
+def get_vector(X_train):
+    output_array = np.reshape(X_train, (X_train.shape[0], -1))
+    return output_array
