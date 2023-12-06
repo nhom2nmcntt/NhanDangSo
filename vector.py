@@ -1,14 +1,5 @@
 import numpy as np
 
-def get_vector(data):
-    data_shape = data.shape
-    #chuan hoa anh
-    data = data * (1/256) 
-    sampleCount = data_shape[0]
-    res = np.empty((sampleCount, 784))
-    for sampleIndex in range(sampleCount):
-        for i in range(data_shape[1]):
-            for j in range(data_shape[2]):
-                #Chuyen mang 2 chieu thanh mang 1 chieu
-                res[sampleIndex, 28*i + j] = data[sampleIndex, i, j]
-    return res
+def get_vector(X_train):
+    output_array = np.reshape(X_train, (X_train.shape[0], -1))
+    return output_array
