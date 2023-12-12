@@ -78,12 +78,11 @@ def show_a_sample(sample):
     https://www.geeksforgeeks.org/how-to-calculate-the-mode-of-numpy-array/
 '''
 def kNN_predict(X_train, y_train, predict_sample_downsampled):
-    def distance(sample1):
-        sum_sq = np.sum(np.square(sample1 - predict_sample_downsampled))
-        return np.sqrt(sum_sq)
+    squared_diffs = np.sum((X_train - predict_sample_downsampled)**2, axis=1)
 
-    distances = np.array(list(map(distance, X_train)))
-    k = 30
+    # Calculate distances using vectorized operation
+    distances = np.sqrt(squared_diffs)
+    k = 5
     idx = np.argpartition(distances, k)[:k]
     labels = y_train[idx]
     answer = st.mode(labels)
