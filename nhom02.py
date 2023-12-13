@@ -5,7 +5,7 @@ import gzip
 import histogram, vector, downsample
 import statistics as st
 import random
-import tqdm
+from tqdm import tqdm
 
 def load_mnist(path, kind='train'):
     labels_path = os.path.join(path, "%s-labels-idx1-ubyte.gz" % kind)
@@ -53,38 +53,62 @@ print('Test histogram shape:', X_test_histogram.shape)
 print()
 
 
-def kNN_predict(X_train, y_train, predict_sample_downsampled, k):
-    squared_diffs = np.sum((X_train - predict_sample_downsampled)**2, axis=1)
+def kNN_predict(X_train, y_train, predict_sample, k):
+    squared_diffs = np.sum((X_train - predict_sample)**2, axis=1)
     distances = np.sqrt(squared_diffs)
     idx = np.argpartition(distances, k)[:k]
     labels = y_train[idx]
     answer = st.mode(labels)
     return answer
 
-def predict(predict_sample):
-    return kNN_predict(X_train_downsample, y_train, predict_sample, 7)
+def predict_downsample(predict_sample, k):
+    return kNN_predict(X_train_downsample, y_train, predict_sample, k)
 
-predictions = np.empty(10000)
-for i in tqdm(range(10000)):
-    predictions[i] = predict(X_test_downsample[i])
-accuracy = np.mean(predictions == y_test[:10000])
-print('Accuracy:', accuracy)
+def predict_vector(predict_sample, k):
+    return kNN_predict(X_train_vector, y_train, predict_sample, k)
 
-sample_count = 10
-nrows = 2
-ncols = sample_count // nrows
-random_indexes = random.sample(range(X_test.shape[0]), sample_count)
-predictions = np.empty(sample_count)
+def predict_histogram(predict_sample, k):
+    return kNN_predict(X_train_histogram, y_train, predict_sample, k)
 
-fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharex=True, sharey=True,)
-ax = ax.flatten()
-for i, test_index in enumerate(random_indexes):
-    img = X_test[test_index]
-    ax[i].imshow(img, cmap='Greys', interpolation='nearest')
-    predictions[i] = predict(X_test_downsample[test_index])
+num_test = 400
+k_lock = 7
 
-ax[0].set_xticks([])
-ax[0].set_yticks([])
-plt.tight_layout()
-print("Predictions: ", predictions)
-plt.show()
+predictions = np.empty(num_test)
+print('Measuring accuracy of vectorized...')
+for i in tqdm(range(num_test)):
+    predictions[i] = predict_vector(X_test_vector[i], k_lock)
+accuracy = np.mean(predictions == y_test[:num_test])
+print('Accuracy of vectorized (k = 7):', accuracy, end='\n\n')
+
+predictions = np.empty(num_test)
+print('Measuring accuracy of downsample...')
+for i in tqdm(range(num_test)):
+    predictions[i] = predict_downsample(X_test_downsample[i], 7)
+accuracy = np.mean(predictions == y_test[:num_test])
+print('Accuracy of downsample (k = 7):', accuracy, end='\n\n')
+
+predictions = np.empty(num_test)
+print('Measuring accuracy of histogram...')
+for i in tqdm(range(num_test)):
+    predictions[i] = predict_histogram(X_test_histogram[i], 50)
+accuracy = np.mean(predictions == y_test[:num_test])
+print('Accuracy of histogram (k = 50):', accuracy, end='\n\n')
+
+# sample_count = 10
+# nrows = 2
+# ncols = sample_count // nrows
+# random_indexes = random.sample(range(X_test.shape[0]), sample_count)
+# predictions = np.empty(sample_count)
+
+# fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharex=True, sharey=True,)
+# ax = ax.flatten()
+# for i, test_index in enumerate(random_indexes):
+#     img = X_test[test_index]
+#     ax[i].imshow(img, cmap='Greys', interpolation='nearest')
+#     predictions[i] = predict(X_test_downsample[test_index])
+
+# ax[0].set_xticks([])
+# ax[0].set_yticks([])
+# plt.tight_layout()
+# print("Predictions: ", predictions)
+# plt.show()
