@@ -92,7 +92,7 @@ print('Measuring accuracy of histogram...')
 for i in tqdm(range(num_test)):
     predictions[i] = predict_histogram(X_test_histogram[i], k_lock)
 accuracy = np.mean(predictions == y_test[:num_test])
-print("Accuracy of histogram (k = {k_lock}):", accuracy, end='\n\n')
+print(f"Accuracy of histogram (k = {k_lock}):", accuracy, end='\n\n')
 
 # sample_count = 10
 # nrows = 2
