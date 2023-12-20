@@ -70,7 +70,7 @@ def predict_vector(predict_sample, k):
 def predict_histogram(predict_sample, k):
     return kNN_predict(X_train_histogram, y_train, predict_sample, k)
 
-num_test = 400
+num_test = 10000
 k_lock = 7
 
 predictions = np.empty(num_test)
@@ -78,21 +78,21 @@ print('Measuring accuracy of vectorized...')
 for i in tqdm(range(num_test)):
     predictions[i] = predict_vector(X_test_vector[i], k_lock)
 accuracy = np.mean(predictions == y_test[:num_test])
-print('Accuracy of vectorized (k = 7):', accuracy, end='\n\n')
+print(f"Accuracy of vectorized (k = {k_lock}):", accuracy, end='\n\n')
 
 predictions = np.empty(num_test)
 print('Measuring accuracy of downsample...')
 for i in tqdm(range(num_test)):
-    predictions[i] = predict_downsample(X_test_downsample[i], 7)
+    predictions[i] = predict_downsample(X_test_downsample[i], k_lock)
 accuracy = np.mean(predictions == y_test[:num_test])
-print('Accuracy of downsample (k = 7):', accuracy, end='\n\n')
+print(f"Accuracy of downsample (k = {k_lock}):", accuracy, end='\n\n')
 
 predictions = np.empty(num_test)
 print('Measuring accuracy of histogram...')
 for i in tqdm(range(num_test)):
-    predictions[i] = predict_histogram(X_test_histogram[i], 50)
+    predictions[i] = predict_histogram(X_test_histogram[i], k_lock)
 accuracy = np.mean(predictions == y_test[:num_test])
-print('Accuracy of histogram (k = 50):', accuracy, end='\n\n')
+print("Accuracy of histogram (k = {k_lock}):", accuracy, end='\n\n')
 
 # sample_count = 10
 # nrows = 2
